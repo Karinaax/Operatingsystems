@@ -1,0 +1,16 @@
+100 SET a 
+'x' SET b 
+IF GET a GET b EQUALS 
+THEN
+    "True" PRINTLN 
+ELSE
+    "False" PRINTLN 
+ENDIF 
+'d' SET b 
+IF GET a GET b EQUALS 
+THEN
+    "True" PRINTLN 
+ELSE
+    "False" PRINTLN 
+ENDIF 
+STOP
