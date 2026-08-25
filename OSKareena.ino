@@ -1411,7 +1411,7 @@ void installHello()
 //Example loop, so the process state can be checked. 
 void installLoopTest()
 {
-    if(findFile("looptest") != -1)
+    if (findFile("looptest") != -1)
         return;
 
     FATEntry entry;
@@ -1422,19 +1422,56 @@ void installLoopTest()
 
     int addr = entry.start;
 
-    // INT 0
+    // 0 SET i
     EEPROM.write(addr++, INT);
-    EEPROM.write(addr++, 0);
-    EEPROM.write(addr++, 0);
+    EEPROM.write(addr++, highByte(0));
+    EEPROM.write(addr++, lowByte(0));
+
+    EEPROM.write(addr++, SET);
+    EEPROM.write(addr++, 'i');
+
+    // LOOP
+    EEPROM.write(addr++, LOOP);
+
+    // GET i
+    EEPROM.write(addr++, GET);
+    EEPROM.write(addr++, 'i');
+
+    // INCREMENT
+    EEPROM.write(addr++, INCREMENT);
+
+    // SET i
+    EEPROM.write(addr++, SET);
+    EEPROM.write(addr++, 'i');
+
+    // GET i
+    EEPROM.write(addr++, GET);
+    EEPROM.write(addr++, 'i');
 
     // PRINTLN
     EEPROM.write(addr++, PRINTLN);
 
-    // Geen STOP !!!
+    // MILLIS
+    EEPROM.write(addr++, MILLIS);
 
-    entry.length =
-        addr - entry.start;
+    // 1000
+    EEPROM.write(addr++, INT);
+    EEPROM.write(addr++, highByte(1000));
+    EEPROM.write(addr++, lowByte(1000));
 
+    // PLUS
+    EEPROM.write(addr++, PLUS);
+
+    // DELAYUNTIL
+    EEPROM.write(addr++, DELAYUNTIL);
+
+    // ENDLOOP
+    EEPROM.write(addr++, ENDLOOP);
+
+    // Save file size
+    entry.length = addr - entry.start;
+
+    // Save FAT entry
     writeFATEntry(
         noOfFiles,
         entry
